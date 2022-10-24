@@ -9,12 +9,8 @@ resource "aws_iam_openid_connect_provider" "github" {
   thumbprint_list = [data.tls_certificate.github.certificates[0].sha1_fingerprint]
 
   client_id_list = concat(
-    ["https://github.com/"]
+    ["sts.amazonaws.com"]
   )
-
-  #   client_id_list = concat(
-  #     [for org in var.github_organizations : "https://github.com/${org}"],
-  #   )
 
   tags = var.tags
 }
@@ -25,7 +21,7 @@ resource "aws_iam_openid_connect_provider" "github" {
 
 # DynamoDB table for terraform lock
 resource "aws_dynamodb_table" "lock" {
-  name         = "terraform-remote-state-lock"
+  name         = "terraform-remote-state-lock-${var.name}"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "LockID"
 
@@ -111,7 +107,7 @@ resource "aws_s3_bucket_public_access_block" "state" {
 
 # S3 Bucket for Terraform state
 resource "aws_s3_bucket" "state" {
-  bucket        = "terraform-remote-state-${var.license_plate}-${var.env}"
+  bucket        = "terraform-remote-state-${var.name}-${var.env}"
   acl           = "private"
   force_destroy = false
 

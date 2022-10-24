@@ -7,7 +7,7 @@ variable "aws_region" {
   type        = string
 }
 
-variable "license_plate" {
+variable "name" {
   description = "License plate of the targeted account"
   type        = string
 }
