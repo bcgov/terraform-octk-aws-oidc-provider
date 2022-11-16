@@ -45,20 +45,6 @@ resource "aws_dynamodb_table" "lock" {
 ## S3 ##
 ########
 
-# KMS Configuration for the encryption of the state file S3 bucket
-resource "aws_kms_key" "this" {
-  description             = var.kms_key_description
-  deletion_window_in_days = var.kms_key_deletion_window_in_days
-  enable_key_rotation     = true
-
-  tags = var.tags
-}
-
-resource "aws_kms_alias" "this" {
-  name          = "alias/${var.kms_key_alias}"
-  target_key_id = aws_kms_key.this.key_id
-}
-
 # Forcing https for terraform state bucket
 data "aws_iam_policy_document" "state_force_ssl" {
   statement {
@@ -103,6 +89,17 @@ resource "aws_s3_bucket_public_access_block" "state" {
   block_public_policy     = true
   ignore_public_acls      = true
   restrict_public_buckets = true
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "state" {
+  bucket = aws_s3_bucket.state.bucket
+
+  rule {
+    apply_server_side_encryption_by_default {
+      # kms_master_key_id = aws_kms_key.mykey.arn     // By not setting this, we use the default S3 kms key 
+      sse_algorithm     = "aws:kms"
+    }
+  }
 }
 
 # S3 Bucket for Terraform state
