@@ -50,19 +50,19 @@ variable "kms_key_alias" {
   description = "The alias for the KMS key as viewed in AWS console. It will be automatically prefixed with `alias/`"
   type        = string
 
-  default     = "tf-remote-state-key"
+  default = "tf-remote-state-key"
 }
 
 variable "kms_key_description" {
   description = "The description of the key as viewed in AWS console."
   type        = string
 
-  default     = "This key is used to encrypt the S3 bucket used for the storage of terraform state file."
+  default = "This key is used to encrypt the S3 bucket used for the storage of terraform state file."
 }
 
 variable "kms_key_deletion_window_in_days" {
   description = "Duration in days after which the key is deleted after destruction of the resource, must be between 7 and 30 days."
   type        = number
 
-  default     = 30
+  default = 30
 }
