@@ -22,4 +22,3 @@ Also it configures the requirements for terraform deployements using S3 Backend.
 terraform plan
 terraform apply -var="aws_region=<aws_region>" -var="license_plate=<license_plate>" -var="env=<env>"
 ```
-
