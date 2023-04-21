@@ -67,12 +67,6 @@ data "aws_iam_policy_document" "state_force_ssl" {
   }
 }
 
-# # Declaration of private ACL
-# resource "aws_s3_bucket_acl" "state" {
-#   bucket = aws_s3_bucket.state.id
-#   acl    = "private"
-# }
-
 # Versionning is really important for terraform state file
 resource "aws_s3_bucket_versioning" "state" {
   bucket = aws_s3_bucket.state.id
