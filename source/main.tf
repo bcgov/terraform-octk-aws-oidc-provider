@@ -6,7 +6,7 @@ data "tls_certificate" "github" {
 # Github OIDC Configuration
 resource "aws_iam_openid_connect_provider" "github" {
   url             = var.github_action_url
-  thumbprint_list = [data.tls_certificate.github.certificates[0].sha1_fingerprint]
+  thumbprint_list = [for cert in data.tls_certificate.github.certificates : cert.sha1_fingerprint]
 
   client_id_list = concat(
     ["sts.amazonaws.com"]
