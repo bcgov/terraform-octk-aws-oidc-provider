@@ -24,7 +24,7 @@ resource "aws_dynamodb_table" "lock" {
   name         = "terraform-remote-state-lock-${var.name}"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "LockID"
-  table_class    = "STANDARD"
+  table_class  = "STANDARD"
   attribute {
     name = "LockID"
     type = "S"
